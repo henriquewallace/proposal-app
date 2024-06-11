@@ -1,33 +1,50 @@
 package com.wallace.proposalapp.converter;
 
 import com.wallace.proposalapp.domain.Proposal;
-import com.wallace.proposalapp.dto.ProposalDTO;
+import com.wallace.proposalapp.domain.User;
+import com.wallace.proposalapp.dto.ProposalRequestDTO;
+import com.wallace.proposalapp.dto.ProposalResponseDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProposalConverter {
 
-    public Proposal from(ProposalDTO proposalDTO) {
+    public Proposal from(ProposalRequestDTO proposalRequestDTO) {
         Proposal proposal = new Proposal();
-        proposal.setId(proposalDTO.getId());
-        proposal.setRequestedAmount(proposalDTO.getValorSolicitado());
-        proposal.setPaymentTerm(proposalDTO.getPrazoPagamento());
-        proposal.setApproved(proposalDTO.getAprovado());
-        proposal.setIntegrated(proposalDTO.isIntegrado());
-        proposal.setObservation(proposalDTO.getObservacao());
-        proposal.setUser(proposalDTO.getUsuario());
+
+        proposal.setId(null);
+        proposal.setRequestedAmount(proposalRequestDTO.getValorSolicitado());
+        proposal.setPaymentTerm(proposalRequestDTO.getPrazoPagamento());
+        proposal.setApproved(null);
+        proposal.setIntegrated(false);
+        proposal.setObservation(null);
+
+        User user = new User();
+        user.setName(proposalRequestDTO.getNome());
+        user.setLastName(proposalRequestDTO.getSobrenome());
+        user.setCpf(proposalRequestDTO.getCpf());
+        user.setPhoneNumber(proposalRequestDTO.getTelefone());
+        user.setIncome(proposalRequestDTO.getRenda());
+        proposal.setUser(user);
 
         return proposal;
     }
 
-    public ProposalDTO from(Proposal proposal) {
-        ProposalDTO proposalDTO = new ProposalDTO();
-        proposalDTO.setId(proposal.getId());
-        proposalDTO.setValorSolicitado(proposal.getRequestedAmount());
-        proposalDTO.setPrazoPagamento(proposal.getPaymentTerm());
-        proposalDTO.setAprovado(proposal.getApproved());
-        proposalDTO.setIntegrado(proposal.isIntegrated());
-        proposalDTO.setObservacao(proposal.getObservation());
-        proposalDTO.setUsuario(proposal.getUser());
+    public ProposalResponseDTO from(Proposal proposal) {
+        ProposalResponseDTO proposalResponseDTO = new ProposalResponseDTO();
+        var user = proposal.getUser();
 
-        return proposalDTO;
+        proposalResponseDTO.setId(proposal.getId());
+        proposalResponseDTO.setNome(user.getName());
+        proposalResponseDTO.setSobrenome(user.getLastName());
+        proposalResponseDTO.setTelefone(user.getPhoneNumber());
+        proposalResponseDTO.setCpf(user.getCpf());
+        proposalResponseDTO.setRenda(user.getIncome());
+        proposalResponseDTO.setValorSolicitado(proposal.getRequestedAmount());
+        proposalResponseDTO.setPrazoPagamento(proposal.getPaymentTerm());
+        proposalResponseDTO.setAprovado(proposal.getApproved());
+        proposalResponseDTO.setObservacao(proposal.getObservation());
+
+        return proposalResponseDTO;
     }
 }
