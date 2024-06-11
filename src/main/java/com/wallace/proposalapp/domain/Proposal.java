@@ -1,8 +1,13 @@
-package com.wallace.proposalapp.entity;
+package com.wallace.proposalapp.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
+@Table(name = "tb_proposal")
 public class Proposal {
 
     @Id
