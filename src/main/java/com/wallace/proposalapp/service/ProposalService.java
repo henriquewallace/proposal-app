@@ -17,12 +17,16 @@ public class ProposalService {
 
     private final ProposalRepository proposalRepository;
     private final ProposalConverter proposalConverter;
+    private final NotificationService notificationService;
 
     public ProposalResponseDTO createProposal(ProposalRequestDTO requestDTO) {
         Proposal proposal = proposalConverter.from(requestDTO);
         proposalRepository.save(proposal);
 
-        return proposalConverter.from(proposal);
+        ProposalResponseDTO responseDTO = proposalConverter.from(proposal);
+        notificationService.notify(responseDTO, "pending-proposal.ex");
+
+        return responseDTO;
     }
 
     public List<ProposalResponseDTO> getAllProposals() {
