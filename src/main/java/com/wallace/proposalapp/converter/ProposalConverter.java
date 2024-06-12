@@ -6,6 +6,8 @@ import com.wallace.proposalapp.dto.ProposalRequestDTO;
 import com.wallace.proposalapp.dto.ProposalResponseDTO;
 import org.springframework.stereotype.Component;
 
+import java.text.NumberFormat;
+
 @Component
 public class ProposalConverter {
 
@@ -40,11 +42,15 @@ public class ProposalConverter {
         proposalResponseDTO.setTelefone(user.getPhoneNumber());
         proposalResponseDTO.setCpf(user.getCpf());
         proposalResponseDTO.setRenda(user.getIncome());
-        proposalResponseDTO.setValorSolicitado(proposal.getRequestedAmount());
+        proposalResponseDTO.setValorSolicitadoFmt(formatRequestedAmount(proposal));
         proposalResponseDTO.setPrazoPagamento(proposal.getPaymentTerm());
         proposalResponseDTO.setAprovado(proposal.getApproved());
         proposalResponseDTO.setObservacao(proposal.getObservation());
 
         return proposalResponseDTO;
+    }
+
+    private String formatRequestedAmount(Proposal proposal) {
+        return NumberFormat.getCurrencyInstance().format(proposal.getRequestedAmount());
     }
 }

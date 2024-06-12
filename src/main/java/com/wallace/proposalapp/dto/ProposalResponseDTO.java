@@ -1,6 +1,5 @@
 package com.wallace.proposalapp.dto;
 
-import com.wallace.proposalapp.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +13,7 @@ public class ProposalResponseDTO {
     private String telefone;
     private String cpf;
     private Double renda;
-    private Double valorSolicitado;
+    private String valorSolicitadoFmt;
     private int prazoPagamento;
     private Boolean aprovado;
     private String observacao;
