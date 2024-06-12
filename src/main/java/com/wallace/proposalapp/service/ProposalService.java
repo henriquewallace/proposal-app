@@ -8,6 +8,9 @@ import com.wallace.proposalapp.repository.ProposalRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class ProposalService {
@@ -20,5 +23,17 @@ public class ProposalService {
         proposalRepository.save(proposal);
 
         return proposalConverter.from(proposal);
+    }
+
+    public List<ProposalResponseDTO> getAllProposals() {
+        List<ProposalResponseDTO> proposalsDTOList = new ArrayList<>();
+
+        proposalRepository.findAll().forEach(proposal -> {
+            var proposalDTO = proposalConverter.from(proposal);
+
+            proposalsDTOList.add(proposalDTO);
+        });
+
+        return proposalsDTOList;
     }
 }
