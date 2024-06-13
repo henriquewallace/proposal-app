@@ -5,7 +5,7 @@ import com.wallace.proposalapp.domain.Proposal;
 import com.wallace.proposalapp.dto.ProposalRequestDTO;
 import com.wallace.proposalapp.dto.ProposalResponseDTO;
 import com.wallace.proposalapp.repository.ProposalRepository;
-import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
