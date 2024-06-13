@@ -35,10 +35,9 @@ public class ProposalService {
         Proposal proposal = proposalConverter.from(requestDTO);
         proposalRepository.save(proposal);
 
-        ProposalResponseDTO responseDTO = proposalConverter.from(proposal);
-        notificationService.notify(responseDTO, exchange);
+        notifyRabbitMQ(proposal);
 
-        return responseDTO;
+        return proposalConverter.from(proposal);
     }
 
     public List<ProposalResponseDTO> getAllProposals() {
@@ -51,5 +50,14 @@ public class ProposalService {
         });
 
         return proposalsDTOList;
+    }
+
+    private void notifyRabbitMQ(Proposal proposal) {
+        try {
+            notificationService.notify(proposal, exchange);
+        } catch (RuntimeException runtimeException) {
+            proposal.setIntegrated(false);
+            proposalRepository.save(proposal);
+        }
     }
 }

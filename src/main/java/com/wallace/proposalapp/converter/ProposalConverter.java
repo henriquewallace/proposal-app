@@ -18,7 +18,7 @@ public class ProposalConverter {
         proposal.setRequestedAmount(proposalRequestDTO.getValorSolicitado());
         proposal.setPaymentTerm(proposalRequestDTO.getPrazoPagamento());
         proposal.setApproved(null);
-        proposal.setIntegrated(false);
+        proposal.setIntegrated(true);
         proposal.setObservation(null);
 
         User user = new User();
