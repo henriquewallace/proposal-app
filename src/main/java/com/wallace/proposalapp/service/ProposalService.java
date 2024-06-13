@@ -6,12 +6,12 @@ import com.wallace.proposalapp.dto.ProposalRequestDTO;
 import com.wallace.proposalapp.dto.ProposalResponseDTO;
 import com.wallace.proposalapp.repository.ProposalRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class ProposalService {
 
@@ -19,12 +19,24 @@ public class ProposalService {
     private final ProposalConverter proposalConverter;
     private final NotificationService notificationService;
 
+    private final String exchange;
+
+    public ProposalService(ProposalRepository proposalRepository,
+                           ProposalConverter proposalConverter,
+                           NotificationService notificationService,
+                           @Value("${rabbitmq.pendingproposal.exchange}") String exchange) {
+        this.proposalRepository = proposalRepository;
+        this.proposalConverter = proposalConverter;
+        this.notificationService = notificationService;
+        this.exchange = exchange;
+    }
+
     public ProposalResponseDTO createProposal(ProposalRequestDTO requestDTO) {
         Proposal proposal = proposalConverter.from(requestDTO);
         proposalRepository.save(proposal);
 
         ProposalResponseDTO responseDTO = proposalConverter.from(proposal);
-        notificationService.notify(responseDTO, "pending-proposal.ex");
+        notificationService.notify(responseDTO, exchange);
 
         return responseDTO;
     }
