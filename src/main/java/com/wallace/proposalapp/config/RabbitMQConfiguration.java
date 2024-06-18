@@ -25,7 +25,7 @@ public class RabbitMQConfiguration {
 
     @Bean
     public Queue createPendingProposalNotificationQueue() {
-        return QueueBuilder.durable("pending-approval.notification-service").build();
+        return QueueBuilder.durable("pending-proposal.notification-service").build();
     }
 
     @Bean
