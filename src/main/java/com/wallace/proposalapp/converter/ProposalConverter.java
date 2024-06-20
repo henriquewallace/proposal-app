@@ -44,7 +44,7 @@ public class ProposalConverter {
         proposalResponseDTO.setRenda(user.getIncome());
         proposalResponseDTO.setValorSolicitadoFmt(formatRequestedAmount(proposal));
         proposalResponseDTO.setPrazoPagamento(proposal.getPaymentTerm());
-        proposalResponseDTO.setAprovado(proposal.getApproved());
+        proposalResponseDTO.setAprovada(proposal.getApproved());
         proposalResponseDTO.setObservacao(proposal.getObservation());
 
         return proposalResponseDTO;

@@ -15,6 +15,6 @@ public class ProposalResponseDTO {
     private Double renda;
     private String valorSolicitadoFmt;
     private int prazoPagamento;
-    private Boolean aprovado;
+    private Boolean aprovada;
     private String observacao;
 }
