@@ -21,10 +21,15 @@ public class RabbitMQConfiguration {
     @Value("${rabbitmq.finishedproposal.exchange}")
     private String finisahedProposalExchange;
 
+    @Value("${rabbitmq.pendingproposal.dlexchange}")
+    private String pendingProposalDLX;
+
 
     @Bean
     public Queue createPendingProposalCreditAnalysisQueue() {
-        return QueueBuilder.durable("pending-proposal.credit-analysis-service").build();
+        return QueueBuilder.durable("pending-proposal.credit-analysis-service")
+                .deadLetterExchange(pendingProposalDLX)
+                .build();
     }
 
     @Bean
@@ -40,6 +45,11 @@ public class RabbitMQConfiguration {
     @Bean
     public Queue createFinishedProposalNotificationQueue() {
         return QueueBuilder.durable("finished-proposal.notification-service").build();
+    }
+
+    @Bean
+    public Queue createPendingProposalDLQueue() {
+        return QueueBuilder.durable("pending-proposal.dlq").build();
     }
 
     @Bean
@@ -59,6 +69,17 @@ public class RabbitMQConfiguration {
     @Bean
     public FanoutExchange createFinishedProposalFanoutExchange() {
         return ExchangeBuilder.fanoutExchange(finisahedProposalExchange).build();
+    }
+
+    @Bean
+    public FanoutExchange createPendingProposalDLExchange() {
+        return ExchangeBuilder.fanoutExchange(pendingProposalDLX).build();
+    }
+
+    @Bean
+    public Binding createPendingProposalDLQBinding() {
+        return BindingBuilder.bind(createPendingProposalDLQueue())
+                .to(createPendingProposalDLExchange());
     }
 
     @Bean
